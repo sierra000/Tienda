@@ -1,0 +1,61 @@
+﻿@model List<Tienda.Models.Order.ListOrderViewModel>
+
+
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                    <div>
+                        <div class="card-body">
+                            @foreach (var order in Model)
+                            {
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        @Html.Label("", "Nombre", new { @class = "font-weight-bold" })
+                                        <span>@order.Order.Name</span>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        @Html.Label("", "Items", new { @class = "font-weight-bold" })
+                                    </div>
+
+                                    @if (order.Order.ItemsSelected != null)
+                                    {
+                                        @foreach (var item in order.Order.ItemsSelected)
+                                        {
+                                            <div class="form-group col-md-12">
+                                                @Html.Label("", "Codigo", new { @class = "font-weight-bold" })
+                                                <span>@item.Code</span>
+
+                                                @Html.Label("", "Nombre", new { @class = "font-weight-bold" })
+                                                <span>@item.ProductName</span>
+
+                                                @Html.Label("", "Cantidad", new { @class = "font-weight-bold" })
+                                                <span>@item.Quantity</span>
+
+                                                @Html.Label("", "Precio", new { @class = "font-weight-bold" })
+                                                <span>@item.Price</span>
+                                            </div>
+                                        }
+
+                                    }
+
+                                    @Html.Label("", "Total", new { @class = "font-weight-bold" })
+                                    <span>@order.TotalPrice</span>
+                                </div>
+                            }
+                        </div>
+                        <div class="form-group col-md-12">
+                            <span>Persona que mas gasto</span>
+                        </div>
+                        <div class="form-group col-md-12">
+                            @if (Model != null)
+                            {
+                                @Model.Select(x => x.Order.Name).First()
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

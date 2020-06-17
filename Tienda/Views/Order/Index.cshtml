@@ -1,0 +1,107 @@
+﻿@model Tienda.Models.Order.OrderViewModel
+
+
+@using (Html.BeginForm("Create", "Order", FormMethod.Post, new { @id = "addOrderForm" }))
+{
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                    @Html.HiddenFor(x => x.sessionId, new { @id = "sessionId" })
+                    <div>
+                        <div class="card-body">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    @Html.Label("", "Nombre", new { @class = "font-weight-bold" })
+                                    @Html.TextBoxFor(x => x.Name, new { @class = "form-control", @required = "required" })
+                                </div>
+
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    @Html.Label("", "Items", new { @class = "font-weight-bold" })
+                                </div>
+                                <div class="form-group col-md-12">
+
+                                    @Html.Label("", "Código", new { @class = "font-weight-bold" })
+                                    @Html.TextBoxFor(x => x.Item.Code, new { @class = "form-control", @required = "required" })
+
+                                    @Html.Label("", "Nombre", new { @class = "font-weight-bold" })
+                                    @Html.TextBoxFor(x => x.Item.ProductName, new { @class = "form-control", @required = "required" })
+
+                                    @Html.Label("", "Cantidad", new { @class = "font-weight-bold" })
+                                    @Html.TextBoxFor(x => x.Item.Quantity, new { @class = "form-control", @required = "required" })
+
+                                    @Html.Label("", "Precio", new { @class = "font-weight-bold" })
+                                    @Html.TextBoxFor(x => x.Item.Price, new { @class = "form-control", @required = "required" })
+                                </div>
+                            </div>
+
+                            <div style="text-align:right">
+                                <button type="button" class="btn btn-primary btn-lg" id="btnSend">Enviar</button>
+                            </div>
+                            <div style="text-align:right">
+                                <button type="button" class="btn btn-primary btn-lg" id="btnAdd">Añadir Item</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script>
+
+    $("#btnAdd").click(function () {
+
+                $.ajax({
+                cache: false,
+                url: '@Url.Action("AddItems", "Order")',
+                type: 'POST',
+                data: $("#addOrderForm").serialize(),
+                success: function (result) {
+                    alert('Item añadido correctamente');
+                    resetItemForm();
+                },
+                error: function (result) {
+                    alert('Error al añadir Item');
+                }
+            });
+    });
+
+        $("#btnSend").click(function () {
+            if ($("#Name").val() == '') {
+                alert('Debe indicar Nombre');
+            }
+            else {
+              $.ajax({
+                cache: false,
+                url: '@Url.Action("Create", "Order")',
+                    type: 'POST',
+                  data: $("#addOrderForm").serialize(),
+                success: function (result) {
+                    alert('Item añadido correctamente');
+                    resetItemForm();
+                },
+                error: function (result) {
+                    alert('Error al añadir Item');
+                }
+            });
+            }
+
+    });
+
+
+    function resetItemForm() {
+        $("#Item_Code").val('');
+        $("#Item_ProductName").val('');
+        $("#Item_Quantity").val('0');
+        $("#Item_Price").val('0');
+    }
+
+
+
+
+    </script>
+
+}
